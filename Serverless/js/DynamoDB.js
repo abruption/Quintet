@@ -466,3 +466,76 @@ function processLeave(ID){
     }).then(alert('회원탈퇴가 완료되었습니다.'), sessionStorage.clear(), location.href='/') 
         .catch(err => alert(err + '\n오류가 발생하였습니다.'))
 }
+
+function FindID(e){
+    e.preventDefault();
+
+    var Name = document.getElementById('name').value;
+    var Email = document.getElementById('email').value;
+
+    if(Name == '' || Email == ''){
+        alert('입력되지 않은 필드가 존재합니다.');
+        return location.href='/findid';
+    } else{
+        const URL = "https://ypay7nz16k.execute-api.us-east-1.amazonaws.com/Beta/member";
+        fetch(URL, {
+            method: "GET",
+            headers: {
+                'Accept': 'application/json'
+            }
+        }).then(resp => resp.json())
+        .then(function(data){
+            let article_arr = data.Items;
+            return article_arr.map(function(article_indiv){
+                if(article_indiv.Name == Name && article_indiv.Email == Email){
+                    alert(Name + '님의 아이디는 ' + article_indiv.ID + '입니다.');
+                    return location.href='/login';
+                }
+                else
+                    result = true;
+            })
+        })
+
+        if(result == true){
+            alert('입력하신 값이 잘못되었거나 해당 정보가 존재하지 않습니다.');
+            return location.href='/findid';
+        }
+    }
+}
+
+function FindPW(e){
+    e.preventDefault();
+
+    var ID = document.getElementById('id').value;
+    var Email = document.getElementById('email').value;
+
+    if(ID == '' || Email == ''){
+        alert('입력되지 않은 필드가 존재합니다.');
+        return location.href='/findpw';
+    } else{
+        const URL = "https://ypay7nz16k.execute-api.us-east-1.amazonaws.com/Beta/member";
+        fetch(URL, {
+            method: "GET",
+            headers: {
+                'Accept': 'application/json'
+            }
+        }).then(resp => resp.json())
+        .then(function(data){
+            let article_arr = data.Items;
+            return article_arr.map(function(article_indiv){
+                if(article_indiv.ID == ID && article_indiv.Email == Email){
+                    alert(ID + '의 비밀번호는 ' + article_indiv.Password + '입니다.');
+                    return location.href='/login';
+                }
+                else
+                    result = true;
+            })
+        })
+
+        if(result == true){
+            alert('입력하신 값이 잘못되었거나 해당 정보가 존재하지 않습니다.');
+            return location.href='/findpw';
+        }
+    }
+
+}
