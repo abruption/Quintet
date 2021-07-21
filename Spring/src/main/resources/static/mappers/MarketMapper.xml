@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ac.kr.inhatc.spring.Mapper.MemberMapper">
+
+    <insert id="processJoinMember" parameterType="ac.kr.inhatc.spring.DTO.memberDto">
+        INSERT INTO MEMBER VALUES
+        (#{id}, #{password}, #{name}, #{mail}, #{phone}, #{gender}, #{birth}, #{address}, #{email_agree}, #{sms_agree}, now(),
+         <if test="email_agree != '미동의' and sms_agree != '미동의'">
+         curdate(), curdate()
+         </if>
+         <if test="email_agree != '미동의' and sms_agree == '미동의'">
+            curdate(), null
+         </if>
+         <if test="email_agree == '미동의' and sms_agree != '미동의'">
+            null, curdate()
+         </if>
+        <if test="email_agree == '미동의' and sms_agree == '미동의'">
+            null, null
+        </if>
+         )
+    </insert>
+
+    <select id="processLoginMember" parameterType="ac.kr.inhatc.spring.DTO.memberDto" resultType="int">
+        SELECT ID, PW FROM MEMBER WHERE ID = #{id} and PW = #{password};
+    </select>
+
+    <select id="processMemberInfo" parameterType="ac.kr.inhatc.spring.DTO.memberDto" resultType="ac.kr.inhatc.spring.DTO.memberDto">
+        SELECT
+        ID id, PW password, NAME name, EMAIL mail, PHONE phone, GENDER gender, BIRTH birth, ADDRESS address, EMAIL_AGREE email_agree, PHONE_AGREE sms_agree
+        FROM MEMBER WHERE ID = #{id}
+    </select>
+
+    <update id="processUpdateMember" parameterType="ac.kr.inhatc.spring.DTO.memberDto">
+        UPDATE MEMBER
+        SET
+            PW          = #{password},
+            NAME        = #{name},
+            GENDER      = #{gender},
+            BIRTH       = #{birth},
+            ADDRESS     = #{address},
+            EMAIL       = #{mail},
+            EMAIL_AGREE = #{email_agree},
+            PHONE_AGREE = #{sms_agree}
+        WHERE ID = #{id}
+    </update>
+
+    <select id="idCheck" resultType="int">
+        SELECT COUNT(*) FROM MEMBER WHERE ID = #{id};
+    </select>
+
+    <select id="memberCheck" resultType="int">
+        SELECT COUNT(*) FROM MEMBER WHERE PHONE = #{phone};
+    </select>
+
+    <select id="loginCheck" resultType="int">
+        SELECT COUNT(*) FROM MEMBER WHERE ID = #{id} and PW = #{password};
+    </select>
+
+</mapper>
