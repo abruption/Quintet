@@ -62,7 +62,7 @@
 
                     <div class="form-group">
                         <strong>성명</strong>
-                        <input type="text" name='name' class="form-control" placeholder="name" value="<%=name%>" readonly>
+                        <input type="text" name='name' id="name" class="form-control" placeholder="name" value="<%=name%>" readonly>
                     </div>
 
                     <div class="form-group">
@@ -111,7 +111,7 @@
                     <div class="form-group">
                         <strong>전화번호</strong>
                         <br>
-                        <input name="phone" type="text" class="form-control" maxlength="11" value="<%=phone%>" readonly>
+                        <input name="phone" type="text" id="phone" class="form-control" maxlength="11" value="<%=phone%>" readonly>
                     </div>
 
                     <div class="form-group">

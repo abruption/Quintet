@@ -1,3 +1,4 @@
+// 로그인 시, 아이디와 비밀번호의 일치여부를 판단하여 알려주는 함수
 function loginCheck(){
     var id = $("#id").val();
     var password = $("#password").val();

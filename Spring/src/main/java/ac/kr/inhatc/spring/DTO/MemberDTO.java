@@ -1,6 +1,7 @@
 package ac.kr.inhatc.spring.DTO;
 
-public class memberDto {
+public class MemberDTO {
+    // 회원정보를 불러오고 저장하기 위한 Data Transfer Object
     private String id;
     private String password;
     private String name;

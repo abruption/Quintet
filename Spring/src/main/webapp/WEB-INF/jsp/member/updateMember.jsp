@@ -16,9 +16,9 @@
 
 	<%-- JQuery CDN 추가	--%>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<%
-	String sessionId = (String) session.getAttribute("sessionId");
-%>
+
+	<%-- 회원정보 수정용 스크립트 파일 호출 --%>
+	<script src="/resource/res/js/updatemember.js"></script>
 
 	<script type="text/javascript">
 		function init() {
@@ -53,20 +53,6 @@
 			}
 
 		}
-
-		function checkForm() {
-			if (!document.newMember.password.value || document.newMember.password.value == '') {
-				alert("비밀번호를 입력하세요.");
-				return false;
-			}
-			document.newMember.mail.value = document.newMember.mail1.value + "@" + document.newMember.mail2.value
-		}
-
-		function fn_updateMember(){
-			document.newMember.action = '/member/processUpdateMember.do';
-			$("#mail").val($("#mail1").val()+"@"+$("#mail2").val());
-			document.newMember.submit();
-		}
 	</script>
 
 <title>회원 수정</title>
@@ -83,23 +69,21 @@
 	<div class="main">
 		<div class="col-md-6 col-sm-12">
 			<div class="login-form">
-				<form name="newMember" class="form-horizontal"
-					action="/member/processUpdateMember.do" method="post"
-					onsubmit="return checkForm()">
+				<form name="EditMember" class="form-horizontal" action="/member/processUpdateMember.do" method="post">
 				<div class="form-group">
 					<strong>아이디</strong>
-					<input name="id" id="id" type="text" class="form-control" placeholder="id" value="<c:out value='${member.id }'/>" disabled >
+					<input name="id" id="id" type="text" class="form-control" placeholder="id" value="<c:out value='${member.id }'/>" readonly >
 				</div>
 
 
 				<div class="form-group">
 					<strong>비밀번호</strong>
-					<input type="password" id="password" name='password' class="form-control" placeholder="Password" >
+					<input type="password" id="password" name='password' class="form-control" placeholder="Password" value="<c:out value="${member.password}" />" >
 				</div>
 
 				<div class="form-group">
 					<strong>성명</strong>
-					<input type="text" name='name' class="form-control" placeholder="name" value="<c:out value='${member.name }'/>" disabled>
+					<input type="text" id="name" name='name' class="form-control" placeholder="name" value="<c:out value='${member.name }'/>" readonly>
 				</div>
 
 				<div class="form-group">
@@ -148,16 +132,14 @@
 				<div class="form-group">
 					<strong>전화번호</strong>
 					<br>
-					<input name="phone" type="text" class="form-control" value="<c:out value='${member.phone }'/>" disabled>
+					<input name="phone" id="phone" type="text" class="form-control" value="<c:out value='${member.phone }'/>" readonly>
 				</div>
 
 				<div class="form-group">
 					<strong>주소</strong>
 					<br>
-					<input name="address" type="text" class="form-control" value="<c:out value='${member.address }'/>">
+					<input name="address" id="address" type="text" class="form-control" value="<c:out value='${member.address }'/>">
 				</div>
-
-				<br>
 
 				<div class="form-group">
 					<strong>이메일 수신 동의</strong>
@@ -171,15 +153,16 @@
 					<br>
 					<input name="sms_agree" id="sms_agree" type="radio" value="동의" /> 동의&nbsp;&nbsp;&nbsp;
 					<input name="sms_agree" id="sms_disagree" type="radio" value="미동의" /> 미동의
+				</div><br>
+
+				<div class="form-group">
+					<strong>가용포인트 : </strong><a href="/member/detailPoint.do" style="text-decoration: none">${TotalPoint}P</a>
 				</div>
 
+				<br>
 
-				<div class="form-group  row">
-					<div class="col-sm-offset-2 col-sm-10 ">
-						<a href="javascript:fn_updateMember()" class="btn btn-success">회원수정</a>
-						<a href="/member/deleteMember.do?id=${member.id}" class="btn btn-dark">회원탈퇴</a>
-					</div>
-				</div>
+				<input onclick="checkForm()" id="join" class="btn btn-success" value="회원정보 수정" size="6">
+				<a href="#" onclick="DeleteMember(); return false;" class="btn btn-dark">회원탈퇴</a>
 			</form>
 			</div>
 		</div>

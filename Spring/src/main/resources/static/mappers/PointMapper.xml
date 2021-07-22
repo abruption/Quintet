@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ac.kr.inhatc.spring.Mapper.PointMapper">
+
+    <select id="TotalPoint" parameterType="ac.kr.inhatc.spring.DTO.PointDTO" resultType="int">
+        SELECT SUM(POINT) FROM POINT WHERE ID = #{id};
+    </select>
+
+    <insert id="JoinPoint" parameterType="ac.kr.inhatc.spring.DTO.PointDTO">
+        INSERT INTO POINT (ID, NAME, PHONE, POINT, DESCRIPTION, TYPE, SAVE_DATE, EXPIRE_DATE)
+        SELECT #{id}, #{name}, #{phone}, #{point}, #{description}, #{type}, CURDATE(), CURDATE() + INTERVAL 1 YEAR FROM DUAL
+        WHERE NOT EXISTS (
+            SELECT ID, TYPE FROM POINT WHERE ID = #{id} and TYPE = #{type}
+            )
+    </insert>
+    <insert id="EmailPoint" parameterType="ac.kr.inhatc.spring.DTO.PointDTO">
+        INSERT INTO POINT (ID, NAME, PHONE, POINT, DESCRIPTION, TYPE, SAVE_DATE, EXPIRE_DATE)
+        SELECT #{id}, #{name}, #{phone}, #{point}, #{description}, #{type}, CURDATE(), CURDATE() + INTERVAL 1 YEAR FROM DUAL
+        WHERE NOT EXISTS (
+            SELECT ID, TYPE FROM POINT WHERE ID = #{id} and TYPE = #{type}
+            )
+    </insert>
+    <insert id="SMSPoint" parameterType="ac.kr.inhatc.spring.DTO.PointDTO">
+        INSERT INTO POINT (ID, NAME, PHONE, POINT, DESCRIPTION, TYPE, SAVE_DATE, EXPIRE_DATE)
+        SELECT #{id}, #{name}, #{phone}, #{point}, #{description}, #{type}, CURDATE(), CURDATE() + INTERVAL 1 YEAR FROM DUAL
+        WHERE NOT EXISTS (
+            SELECT ID, TYPE FROM POINT WHERE ID = #{id} and TYPE = #{type}
+            )
+    </insert>
+
+    <delete id="processDeleteMember" parameterType="String">
+        DELETE FROM POINT WHERE ID = #{id};
+    </delete>
+    
+    <select id="PointList" parameterType="String" resultType="hashmap">
+        SELECT * FROM POINT WHERE ID = #{id};
+    </select>
+
+    <!-- 포인트 적립 순위 조회를 위한 Query (내림차순 정렬) -->
+    <select id="PointRanking" resultType="hashmap">
+        SELECT ID, NAME, PHONE, SUM(POINT) as 'TOTAL', RANK() OVER(ORDER BY SUM(POINT)) as 'point_rank' FROM POINT GROUP BY ID, NAME, PHONE ORDER BY TOTAL DESC
+    </select>
+</mapper>
+
+
+
+        <!-- SMS / 이메일 수신동의 시 각각 1,000 Point를 지급하는 Query -->
+        <!-- 동의 / 미동의를 반복 시 무제한으로 포인트 지급이 이루어지므로 주석처리 -->
+        <!--    <insert id="JoinPoint" parameterType="ac.kr.inhatc.spring.DTO.PointDTO">-->
+        <!--        INSERT-->
+        <!--        INTO POINT VALUES-->
+        <!--        (#{id}, #{name}, #{phone}, #{point}, #{description}, #{type}, CURDATE(), CURDATE() + INTERVAL 1 YEAR)-->
+        <!--    </insert>-->
+
+        <!--    <insert id="EmailPoint" parameterType="ac.kr.inhatc.spring.DTO.PointDTO">-->
+        <!--        INSERT-->
+        <!--        INTO POINT VALUES-->
+        <!--        (#{id}, #{name}, #{phone}, #{point}, #{description}, #{type}, CURDATE(), CURDATE() + INTERVAL 1 YEAR)-->
+        <!--    </insert>-->
+
+        <!--    <insert id="SMSPoint" parameterType="ac.kr.inhatc.spring.DTO.PointDTO">-->
+        <!--        INSERT-->
+        <!--        INTO POINT VALUES-->
+        <!--        (#{id}, #{name}, #{phone}, #{point}, #{description}, #{type}, CURDATE(), CURDATE() + INTERVAL 1 YEAR)-->
+        <!--    </insert>-->

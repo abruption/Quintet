@@ -1,3 +1,4 @@
+// 입력 Form의 빈 값 여부를 판단하고 이상이 없을 경우 회원가입을 담당하는 함수를 호출
 function checkForm() {
     if ($("#password").val() == '' || $("#password").val() == null) {
         alert("비밀번호를 입력하세요.");
@@ -47,7 +48,11 @@ function checkForm() {
     fn_addMember();
 }
 
+// 포인트 적립 처리와 회원가입을 담당하는 함수
 function fn_addMember() {
+    Point_Service();
+    alert('회원가입이 완료되었습니다.');
+
     document.newMember.action = '/member/processJoinMember.do';
     document.newMember.address.value = document.newMember.address1.value + " " + document.newMember.address2.value;
     document.newMember.birth.value = document.newMember.birthyy.value + document.newMember.birthmm.value + document.newMember.birthdd.value
@@ -55,6 +60,7 @@ function fn_addMember() {
     document.newMember.submit();
 }
 
+// ID 중복체크를 담당하는 함수
 function idCheck(){
     var id = $("#id").val();
     var data = {id : id}
@@ -76,6 +82,7 @@ function idCheck(){
     });
 }
 
+// 다음 주소 API를 이용하여 주소 입력을 지원하는 함수
 function findAddress(){
     new daum.Postcode({
         oncomplete: function(data) {
@@ -123,4 +130,26 @@ function findAddress(){
             document.getElementById("address2").focus();
         }
     }).open();
+}
+
+// 포인트 적립 처리를 위해 입력 Form의 값을 Controller에 넘기는 함수
+function Point_Service(){
+    var id = $("#id").val();
+    var name = $("#name").val();
+    var phone = $("#phone").val();
+    var email_agree_value = $('input[name="email_agree"]:checked').val();
+    var sms_agree_value = $('input[name="sms_agree"]:checked').val();
+    var data = {
+        id : id,
+        name : name,
+        phone : phone,
+        email_agree : email_agree_value,
+        sms_agree : sms_agree_value
+    }
+
+    $.ajax({
+        url: '/Point_Service',
+        type: 'POST',
+        data: data,
+    });
 }

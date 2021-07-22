@@ -5,7 +5,9 @@
 
 <mapper namespace="ac.kr.inhatc.spring.Mapper.MemberMapper">
 
-    <insert id="processJoinMember" parameterType="ac.kr.inhatc.spring.DTO.memberDto">
+    <!-- 회원가입 정보를 담당하는 Query -->
+    <!-- 이메일 / SMS 수신 동의 여부에 따라 수신동의 날짜 추가여부 판단 -->
+    <insert id="processJoinMember" parameterType="ac.kr.inhatc.spring.DTO.MemberDTO">
         INSERT INTO MEMBER VALUES
         (#{id}, #{password}, #{name}, #{mail}, #{phone}, #{gender}, #{birth}, #{address}, #{email_agree}, #{sms_agree}, now(),
          <if test="email_agree != '미동의' and sms_agree != '미동의'">
@@ -23,17 +25,16 @@
          )
     </insert>
 
-    <select id="processLoginMember" parameterType="ac.kr.inhatc.spring.DTO.memberDto" resultType="int">
-        SELECT ID, PW FROM MEMBER WHERE ID = #{id} and PW = #{password};
-    </select>
-
-    <select id="processMemberInfo" parameterType="ac.kr.inhatc.spring.DTO.memberDto" resultType="ac.kr.inhatc.spring.DTO.memberDto">
+    <!-- 회원정보 수정 시, 세션에 저장된 ID 값을 기반으로 입력된 정보를 불러오는 Query -->
+    <!-- 조회가 성공하였을 경우 DTO 형식으로 반환 -->
+    <select id="processMemberInfo" parameterType="ac.kr.inhatc.spring.DTO.MemberDTO" resultType="ac.kr.inhatc.spring.DTO.MemberDTO">
         SELECT
         ID id, PW password, NAME name, EMAIL mail, PHONE phone, GENDER gender, BIRTH birth, ADDRESS address, EMAIL_AGREE email_agree, PHONE_AGREE sms_agree
         FROM MEMBER WHERE ID = #{id}
     </select>
 
-    <update id="processUpdateMember" parameterType="ac.kr.inhatc.spring.DTO.memberDto">
+    <!-- 회원정보 수정을 담당하는 Query -->
+    <update id="processUpdateMember" parameterType="ac.kr.inhatc.spring.DTO.MemberDTO">
         UPDATE MEMBER
         SET
             PW          = #{password},
@@ -47,16 +48,33 @@
         WHERE ID = #{id}
     </update>
 
+    <!-- ID 중복 체크를 확인하는 Query -->
+    <!-- 반환 형식은 int형으로 중복/미중복 여부를 판단 -->
     <select id="idCheck" resultType="int">
         SELECT COUNT(*) FROM MEMBER WHERE ID = #{id};
     </select>
 
+    <!-- 전화번호를 기반으로 회원가입 여부를 판단하는 Query -->
+    <!-- 반환 형식은 int형으로 중복/미중복 여부를 판단 -->
     <select id="memberCheck" resultType="int">
         SELECT COUNT(*) FROM MEMBER WHERE PHONE = #{phone};
     </select>
 
+    <!-- 로그인 처리를 담당하는 Query-->
+    <!-- 반환 값은 int형으로 로그인 성공/실패 여부 판단 -->
     <select id="loginCheck" resultType="int">
         SELECT COUNT(*) FROM MEMBER WHERE ID = #{id} and PW = #{password};
     </select>
+
+    <!-- 회원탈퇴 기능을 처리하는 Query -->
+    <!-- 세션에 저장된 ID 값을 넘겨받아 DB의 저장된 값을 삭제 함 -->
+    <delete id="processDeleteMember" parameterType="String">
+        DELETE FROM MEMBER WHERE ID = #{id};
+    </delete>
+
+    <!-- DTO 미사용으로 인한 로그인 처리 Query 주석처리 → loginCheck로 대체 -->
+<!--    <select id="processLoginMember" parameterType="ac.kr.inhatc.spring.DTO.MemberDTO" resultType="int">-->
+<!--        SELECT ID, PW FROM MEMBER WHERE ID = #{id} and PW = #{password};-->
+<!--    </select>-->
 
 </mapper>
