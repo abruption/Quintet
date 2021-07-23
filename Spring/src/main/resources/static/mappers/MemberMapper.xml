@@ -44,7 +44,23 @@
             ADDRESS     = #{address},
             EMAIL       = #{mail},
             EMAIL_AGREE = #{email_agree},
-            PHONE_AGREE = #{sms_agree}
+            PHONE_AGREE = #{sms_agree},
+            <if test="email_agree != '미동의' and sms_agree != '미동의'">
+                EMAIL_AGREE_DATE = curdate(),
+                PHONE_AGREE_DATE = curdate()
+            </if>
+            <if test="email_agree != '미동의' and sms_agree == '미동의'">
+                EMAIL_AGREE_DATE = curdate(),
+                PHONE_AGREE_DATE = null
+            </if>
+            <if test="email_agree == '미동의' and sms_agree != '미동의'">
+                EMAIL_AGREE_DATE = null,
+                PHONE_AGREE_DATE = curdate()
+            </if>
+            <if test="email_agree == '미동의' and sms_agree == '미동의'">
+                EMAIL_AGREE_DATE = null,
+                PHONE_AGREE_DATE = null
+            </if>
         WHERE ID = #{id}
     </update>
 
@@ -71,6 +87,11 @@
     <delete id="processDeleteMember" parameterType="String">
         DELETE FROM MEMBER WHERE ID = #{id};
     </delete>
+
+    <!-- 회원조회 기능을 처리하는 Query -->
+    <select id="MemberList" resultType="hashmap">
+        SELECT * FROM MEMBER;
+    </select>
 
     <!-- DTO 미사용으로 인한 로그인 처리 Query 주석처리 → loginCheck로 대체 -->
 <!--    <select id="processLoginMember" parameterType="ac.kr.inhatc.spring.DTO.MemberDTO" resultType="int">-->

@@ -9,15 +9,13 @@
         </a>
         <c:choose>
             <c:when test="${empty userId}">
-                <li class="nav-item"><a class="nav-link" href='#'>준비중</a></li>
-                <li class="nav-item"><a class="nav-link" href='#'>준비중</a></li>
-                <li class="nav-item"><a class="nav-link" href='#'>준비중</a></li>
+                <li class="nav-item"><a class="nav-link" href='#' onclick="Login(); return false;">출석체크</a></li>
                 <li class="nav-item"><a class="nav-link" href='<c:url value="/member/LoginMember.do"/>'>로그인</a></li>
                 <li class="nav-item"><a class="nav-link" href='<c:url value="/member/checkMember.do"/>'>회원가입</a></li>
             </c:when>
             <c:when test="${userId eq 'admin'}">
                 <li class="nav-item"><a class="nav-link">관리자님 환영합니다.</a></li>
-                <li class="nav-item"><a class="nav-link" href='<c:url value=""/>'>회원조회</a></li>
+                <li class="nav-item"><a class="nav-link" href='<c:url value="/member/searchMember.do"/>'>회원조회</a></li>
                 <li class="nav-item"><a class="nav-link" href='<c:url value=""/>'>출석현황 조회</a></li>
                 <li class="nav-item"><a class="nav-link" href='<c:url value="/member/pointRanking.do"/>'>포인트 적립 순위 조회</a></li>
                 <li class="nav-item"><a class="nav-link" href='<c:url value="/member/updateMember.do"/>'>회원정보 수정</a></li>
@@ -25,8 +23,8 @@
             </c:when>
             <c:otherwise>
                 <li class="nav-item"><a class="nav-link">${userId}님 환영합니다.</a></li>
+                <li class="nav-item"><a class="nav-link" href='#'>출석체크</a></li>
                 <li class="nav-item"><a class="nav-link" href='<c:url value="/member/detailPoint.do"/>'>포인트 상세내역 조회</a></li>
-                <li class="nav-item"><a class="nav-link" href='#'>준비중</a></li>
                 <li class="nav-item"><a class="nav-link" href='<c:url value="/member/updateMember.do"/>'>회원정보 수정</a></li>
                 <li class="nav-item"><a class="nav-link" href='#' onclick="Logout(); return false;">로그아웃</a></li>
             </c:otherwise>

@@ -5,10 +5,13 @@
 
 <mapper namespace="ac.kr.inhatc.spring.Mapper.PointMapper">
 
-    <select id="TotalPoint" parameterType="ac.kr.inhatc.spring.DTO.PointDTO" resultType="int">
+    <!-- 회원정보 수정란의 가용포인트(합계) 조회하기위한 Query -->
+    <!-- 세션의 ID 값 또는 파라미터로 넘겨받은 ID 값으로 조회 -->
+    <select id="TotalPoint" parameterType="String" resultType="int">
         SELECT SUM(POINT) FROM POINT WHERE ID = #{id};
     </select>
 
+    <!-- 회원가입 축하 포인트 지급 및 중복방지를 위한 Query -->
     <insert id="JoinPoint" parameterType="ac.kr.inhatc.spring.DTO.PointDTO">
         INSERT INTO POINT (ID, NAME, PHONE, POINT, DESCRIPTION, TYPE, SAVE_DATE, EXPIRE_DATE)
         SELECT #{id}, #{name}, #{phone}, #{point}, #{description}, #{type}, CURDATE(), CURDATE() + INTERVAL 1 YEAR FROM DUAL
@@ -16,6 +19,8 @@
             SELECT ID, TYPE FROM POINT WHERE ID = #{id} and TYPE = #{type}
             )
     </insert>
+
+    <!-- 이메일 수신동의 포인트 지급 및 중복방지를 위한 Query -->
     <insert id="EmailPoint" parameterType="ac.kr.inhatc.spring.DTO.PointDTO">
         INSERT INTO POINT (ID, NAME, PHONE, POINT, DESCRIPTION, TYPE, SAVE_DATE, EXPIRE_DATE)
         SELECT #{id}, #{name}, #{phone}, #{point}, #{description}, #{type}, CURDATE(), CURDATE() + INTERVAL 1 YEAR FROM DUAL
@@ -23,6 +28,8 @@
             SELECT ID, TYPE FROM POINT WHERE ID = #{id} and TYPE = #{type}
             )
     </insert>
+
+    <!-- SMS 수신동의 포인트 지급 및 중복방지를 위한 Query -->
     <insert id="SMSPoint" parameterType="ac.kr.inhatc.spring.DTO.PointDTO">
         INSERT INTO POINT (ID, NAME, PHONE, POINT, DESCRIPTION, TYPE, SAVE_DATE, EXPIRE_DATE)
         SELECT #{id}, #{name}, #{phone}, #{point}, #{description}, #{type}, CURDATE(), CURDATE() + INTERVAL 1 YEAR FROM DUAL
@@ -31,38 +38,19 @@
             )
     </insert>
 
+    <!-- 회원탈퇴 처리 시, POINT 테이블에 존재하는 해당 ID의 값을 가진 데이터를 모두 삭제하는 Query -->
     <delete id="processDeleteMember" parameterType="String">
         DELETE FROM POINT WHERE ID = #{id};
     </delete>
-    
+
+    <!-- 포인트 상세내역 조회를 위한 Query -->
+    <!-- 세션의 ID 값 또는 파라미터로 넘겨받은 ID 값으로 조회 -->
     <select id="PointList" parameterType="String" resultType="hashmap">
         SELECT * FROM POINT WHERE ID = #{id};
     </select>
 
     <!-- 포인트 적립 순위 조회를 위한 Query (내림차순 정렬) -->
     <select id="PointRanking" resultType="hashmap">
-        SELECT ID, NAME, PHONE, SUM(POINT) as 'TOTAL', RANK() OVER(ORDER BY SUM(POINT)) as 'point_rank' FROM POINT GROUP BY ID, NAME, PHONE ORDER BY TOTAL DESC
+        SELECT ID, NAME, PHONE, SUM(POINT) as 'TOTAL', RANK() OVER(ORDER BY SUM(POINT) DESC) as 'point_rank' FROM POINT GROUP BY ID, NAME, PHONE ORDER BY TOTAL DESC
     </select>
 </mapper>
-
-
-
-        <!-- SMS / 이메일 수신동의 시 각각 1,000 Point를 지급하는 Query -->
-        <!-- 동의 / 미동의를 반복 시 무제한으로 포인트 지급이 이루어지므로 주석처리 -->
-        <!--    <insert id="JoinPoint" parameterType="ac.kr.inhatc.spring.DTO.PointDTO">-->
-        <!--        INSERT-->
-        <!--        INTO POINT VALUES-->
-        <!--        (#{id}, #{name}, #{phone}, #{point}, #{description}, #{type}, CURDATE(), CURDATE() + INTERVAL 1 YEAR)-->
-        <!--    </insert>-->
-
-        <!--    <insert id="EmailPoint" parameterType="ac.kr.inhatc.spring.DTO.PointDTO">-->
-        <!--        INSERT-->
-        <!--        INTO POINT VALUES-->
-        <!--        (#{id}, #{name}, #{phone}, #{point}, #{description}, #{type}, CURDATE(), CURDATE() + INTERVAL 1 YEAR)-->
-        <!--    </insert>-->
-
-        <!--    <insert id="SMSPoint" parameterType="ac.kr.inhatc.spring.DTO.PointDTO">-->
-        <!--        INSERT-->
-        <!--        INTO POINT VALUES-->
-        <!--        (#{id}, #{name}, #{phone}, #{point}, #{description}, #{type}, CURDATE(), CURDATE() + INTERVAL 1 YEAR)-->
-        <!--    </insert>-->

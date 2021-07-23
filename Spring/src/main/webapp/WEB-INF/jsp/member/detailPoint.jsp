@@ -40,20 +40,13 @@
                 <th>포인트 만료일시</th>
             </tr>
             </thead>
-            <c:if test="${PointList.size() == 0}">
-                <tfoot>
-                    <tr>
-                        <td colspan="3">현재 데이타가 없습니다.</td>
-                    </tr>
-                </tfoot>
-            </c:if>
             <tbody>
             <c:forEach var="point" items="${PointList}" varStatus="status">
                 <c:set var="sum" value="${sum+point.POINT}" />
                 <tr>
                     <td style="text-align: center;">${point.NAME}</td>
                     <td style="text-align: center;">${point.PHONE}</td>
-                    <td style="text-align: center;">${point.POINT}</td>
+                    <td style="text-align: center;">${point.POINT}P</td>
                     <td style="text-align: center;">${point.DESCRIPTION}</td>
                     <td style="text-align: center;">${point.SAVE_DATE}</td>
                     <td style="text-align: center;">${point.EXPIRE_DATE}</td>

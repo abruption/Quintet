@@ -46,4 +46,5 @@ public class PointService {
     public List<?> PointRanking() throws Exception {
         return pointMapper.PointRanking();
     }
+
 }

@@ -26,33 +26,36 @@
 </head>
 <body>
 <c:set var="sum" value="${0}"/>
-<h2>포인트 적립순위 조회 페이지</h2>
+<h2>포인트 상세내역 조회 페이지</h2>
 <br>
 <div class="table-responsive">
     <table class="table table-bordered table-hover">
         <thead>
         <tr>
-            <th>순위</th>
-            <th>아이디</th>
             <th>이름</th>
             <th>전화번호</th>
-            <th>포인트 합계</th>
+            <th>포인트 내역</th>
+            <th>포인트 적립내용</th>
+            <th>포인트 적립일시</th>
+            <th>포인트 만료일시</th>
         </tr>
         </thead>
         <tbody>
-        <c:forEach var="point" items="${PointRanking}" varStatus="status">
+        <c:forEach var="point" items="${PointList}" varStatus="status">
             <tr>
-                <td style="text-align: center;"><b>${point.point_rank}</b></td>
-                <td style="text-align: center;">${point.ID}</td>
                 <td style="text-align: center;">${point.NAME}</td>
                 <td style="text-align: center;">${point.PHONE}</td>
-                <td style="text-align: center;">${point.TOTAL}P</td>
+                <td style="text-align: center;">${point.POINT}P</td>
+                <td style="text-align: center;">${point.DESCRIPTION}</td>
+                <td style="text-align: center;">${point.SAVE_DATE}</td>
+                <td style="text-align: center;">${point.EXPIRE_DATE}</td>
             </tr>
         </c:forEach>
         </tbody>
     </table>
 </div>
-<br><br>
+
+<br>
 <div style="float: right">
     <input type="button" value="뒤로가기" class="btn-black" onclick="history.back()">
     <input type="button" value="메인 화면" class="btn-black" onclick="location.href='/'">

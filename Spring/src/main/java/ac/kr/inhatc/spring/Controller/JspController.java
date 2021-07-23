@@ -179,19 +179,30 @@ public class JspController {
         return index(request);
     }
 
-    // 세션의 ID 값을 기반으로 회원정보와 포인트를 불러오는 회원정보 수정 페이지 Mapping
+    // 세션의 ID 값 또는 파라미터로 전달받은 ID 값을 기반으로 회원정보와 포인트를 불러오는 회원정보 수정 페이지 Mapping
     @RequestMapping("/member/updateMember.do")
     public ModelAndView updateMember(HttpServletRequest request) throws Exception{
         ModelAndView mv = new ModelAndView();
         mv.setViewName("/member/updateMember");
 
+        String id = request.getParameter("id");
         HttpSession session = request.getSession();
-        MemberDTO dto = new MemberDTO();
-        dto.setId(session.getAttribute("userId").toString());
-        dto = memberService.processMemberInfo(dto);
-        int point = pointService.TotalPoint(session.getAttribute("userId").toString());
-        mv.addObject("member", dto);
-        mv.addObject("TotalPoint", point);
+
+        if(id != null) {
+            MemberDTO dto = new MemberDTO();
+            dto.setId(request.getParameter("id"));
+            dto = memberService.processMemberInfo(dto);
+            int point = pointService.TotalPoint(request.getParameter("id"));
+            mv.addObject("member", dto);
+            mv.addObject("TotalPoint", point);
+        } else {
+            MemberDTO dto = new MemberDTO();
+            dto.setId(session.getAttribute("userId").toString());
+            dto = memberService.processMemberInfo(dto);
+            int point = pointService.TotalPoint(session.getAttribute("userId").toString());
+            mv.addObject("member", dto);
+            mv.addObject("TotalPoint", point);
+        }
         return mv;
     }
 
@@ -222,8 +233,14 @@ public class JspController {
     public ModelAndView detailPoint(HttpServletRequest request) throws Exception {
         ModelAndView mv = new ModelAndView();
         HttpSession session = request.getSession();
-        List<?> PointList = pointService.PointList(session.getAttribute("userId").toString());
-        mv.addObject("PointList", PointList);
+        String id = request.getParameter("id");
+        if(id != null){
+            List<?> PointList = pointService.PointList(id);
+            mv.addObject("PointList", PointList);
+        } else {
+            List<?> PointList = pointService.PointList(session.getAttribute("userId").toString());
+            mv.addObject("PointList", PointList);
+        }
         mv.setViewName("/member/detailPoint");
         return mv;
     }
@@ -235,6 +252,18 @@ public class JspController {
         List<?> PointRanking = pointService.PointRanking();
         mv.addObject("PointRanking", PointRanking);
         mv.setViewName("/member/pointRanking");
+        return mv;
+    }
+
+    // 관리자용 회원조회를 위한 페이지 Mapping
+    @RequestMapping("/member/searchMember.do")
+    public ModelAndView searchMember() throws Exception {
+        ModelAndView mv = new ModelAndView();
+        List<?> PointRanking = pointService.PointRanking();
+        List<?> MemberList = memberService.MemberList();
+        mv.addObject("PointRanking", PointRanking);
+        mv.addObject("MemberList", MemberList);
+        mv.setViewName("/member/searchMember");
         return mv;
     }
 }

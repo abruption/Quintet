@@ -156,7 +156,7 @@
 				</div><br>
 
 				<div class="form-group">
-					<strong>가용포인트 : </strong><a href="/member/detailPoint.do" style="text-decoration: none">${TotalPoint}P</a>
+					<strong>가용포인트 : </strong><a href="/member/detailPoint.do?id=${member.id}" style="text-decoration: none">${TotalPoint}P</a>
 				</div>
 
 				<br>

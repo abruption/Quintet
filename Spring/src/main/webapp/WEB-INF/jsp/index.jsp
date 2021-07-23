@@ -15,6 +15,11 @@
             location.href="/member/LogoutMember.do";
             alert('로그아웃 되었습니다.');
         }
+
+        function Login() {
+            location.href="/member/LoginMember.do";
+            alert('로그인 화면으로 이동합니다.');
+        }
     </script>
 
     <meta charset="UTF-8">
