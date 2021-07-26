@@ -1,6 +1,7 @@
 package ac.kr.inhatc.spring.Controller;
 
 import ac.kr.inhatc.spring.DTO.MemberDTO;
+import ac.kr.inhatc.spring.Service.AttendanceService;
 import ac.kr.inhatc.spring.Service.MemberService;
 import ac.kr.inhatc.spring.Service.PointService;
 import org.slf4j.Logger;
@@ -24,6 +25,9 @@ public class JspController {
 
     @Autowired
     PointService pointService;          // PointService 의존성 주입
+
+    @Autowired
+    AttendanceService attendanceService;    // AttendanceService 의존성 주입
 
     // SLF4J Logger 사용
     private static final Logger Log = LoggerFactory.getLogger(MemberService.class);
@@ -264,6 +268,47 @@ public class JspController {
         mv.addObject("PointRanking", PointRanking);
         mv.addObject("MemberList", MemberList);
         mv.setViewName("/member/searchMember");
+        return mv;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/Check_Attendance", method = RequestMethod.POST)
+    public String Check_Attendance(String id) throws Exception {
+        Log.info("Check_Attendance() 진입");
+        int result = attendanceService.attCheck(id);
+
+        if(result == 0)
+            return "Success";
+        else
+            return "Fail";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/Attendance", method = RequestMethod.POST)
+    public String Attendance(String id) throws Exception {
+        Log.info("Attendance() 진입");
+        attendanceService.Attendance(id);
+        pointService.attendPoint(id);
+        int result = pointService.CheckAttend(id);
+        //Log.info(String.valueOf(result));
+        if(result == 3){
+            pointService.BonusPoint(id);
+            return "Bonus";
+        } else {
+            return "None";
+        }
+    }
+
+    @RequestMapping("/member/searchAttend.do")
+    public ModelAndView searchAttend() throws Exception {
+        ModelAndView mv = new ModelAndView();
+        List<?> PointRanking = pointService.PointRanking();
+        List<?> MemberList = memberService.MemberList();
+        List<?> AttendCount = attendanceService.AttendCount();
+        mv.addObject("PointRanking", PointRanking);
+        mv.addObject("MemberList", MemberList);
+        mv.addObject("AttendCount", AttendCount);
+        mv.setViewName("/member/searchAttend");
         return mv;
     }
 }

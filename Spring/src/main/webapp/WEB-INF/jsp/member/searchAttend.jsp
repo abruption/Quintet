@@ -42,7 +42,7 @@
 </head>
 <body>
 <br>
-<h2>관리자용 회원 조회 페이지</h2>
+<h2>관리자용 출석현황 조회 페이지</h2>
 
 <hr>
 
@@ -50,47 +50,27 @@
         <table class="search-table table table-bordered table-hover">
             <thead>
             <tr>
-                <th>가입일자</th>
                 <th>아이디</th>
                 <th>회원명</th>
-                <th>생년월일</th>
-                <th>성별</th>
                 <th>전화번호</th>
-                <th>이메일</th>
-                <th>SMS 수신동의 일자</th>
-                <th>이메일 수신동의 일자</th>
-                <th>가용 포인트</th>
+                <th>적립포인트</th>
+                <th>출석일자</th>
             </tr>
             </thead>
             <tbody>
             <c:forEach var="member" items="${MemberList}" varStatus="status">
                 <tr>
-                    <td>${member.createAt}</td>
-                    <td><a href="/member/updateMember.do?id=${member.ID}" style="text-decoration: none;">${member.ID}</a></td>
+                    <td>${member.ID}</td>
                     <td>${member.NAME}</td>
-                    <td>${member.BIRTH}</td>
-                    <td>${member.GENDER}</td>
                     <td>${member.PHONE}</td>
-                    <td>${member.EMAIL}</td>
-                   <c:choose>
-                       <c:when test="${empty member.PHONE_AGREE_DATE}">
-                           <td> - </td>
-                       </c:when>
-                       <c:otherwise>
-                            <td>${member.PHONE_AGREE_DATE}</td>
-                       </c:otherwise>
-                   </c:choose>
-                    <c:choose>
-                        <c:when test="${empty member.EMAIL_AGREE_DATE}">
-                            <td> - </td>
-                        </c:when>
-                        <c:otherwise>
-                            <td>${member.EMAIL_AGREE_DATE}</td>
-                        </c:otherwise>
-                    </c:choose>
                     <c:forEach var="point" items="${PointRanking}" varStatus="status">
                         <c:if test="${member.ID eq point.ID}">
                             <td><a href="/member/detailPoint.do?id=${point.ID}" style="text-decoration: none;">${point.TOTAL}P</a></td>
+                        </c:if>
+                    </c:forEach>
+                    <c:forEach var="attend" items="${AttendCount}" varStatus="status">
+                        <c:if test="${attend.ID eq member.ID}">
+                            <td>${attend.COUNT}일</td>
                         </c:if>
                     </c:forEach>
                 </tr>

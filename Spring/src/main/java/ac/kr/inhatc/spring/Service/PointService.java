@@ -47,4 +47,16 @@ public class PointService {
         return pointMapper.PointRanking();
     }
 
+    public void attendPoint(String id) throws Exception{
+        pointMapper.attendPoint(id);
+    }
+
+    public int CheckAttend(String id) throws Exception {
+        return pointMapper.CheckAttend(id);
+    }
+
+    public void BonusPoint(String id) throws Exception {
+        pointMapper.BonusPoint(id);
+    }
+
 }

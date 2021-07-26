@@ -11,4 +11,7 @@ public interface PointMapper {
     int processDeleteMember(String id) throws Exception;
     List<?> PointList(String id) throws Exception;
     List<?> PointRanking() throws Exception;
+    void attendPoint(String id) throws Exception;
+    int CheckAttend(String id) throws Exception;
+    void BonusPoint(String id) throws Exception;
 }

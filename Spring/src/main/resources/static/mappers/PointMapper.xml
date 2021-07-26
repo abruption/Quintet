@@ -53,4 +53,25 @@
     <select id="PointRanking" resultType="hashmap">
         SELECT ID, NAME, PHONE, SUM(POINT) as 'TOTAL', RANK() OVER(ORDER BY SUM(POINT) DESC) as 'point_rank' FROM POINT GROUP BY ID, NAME, PHONE ORDER BY TOTAL DESC
     </select>
+
+    <insert id="attendPoint" parameterType="String">
+        INSERT INTO POINT (ID, POINT, TYPE, DESCRIPTION, SAVE_DATE, EXPIRE_DATE) VALUES (#{id}, 1000, 'ATTEND', '출석체크 포인트 지급' ,CURDATE(), CURDATE() + INTERVAL 1 YEAR);
+        UPDATE POINT X INNER JOIN MEMBER Y ON X.ID = Y.ID
+            SET X.NAME = Y.NAME WHERE Y.ID = #{id};
+        UPDATE POINT X INNER JOIN MEMBER Y ON X.ID = Y.ID
+            SET X.PHONE = Y.PHONE WHERE Y.ID = #{id};
+    </insert>
+
+    <select id="CheckAttend" parameterType="String" resultType="int">
+        SELECT COUNT(ID) FROM ATTENDANCE WHERE ID = #{id} and ATT_DATE BETWEEN DATE_ADD(NOW(), INTERVAL -3 DAY) AND NOW()
+    </select>
+
+    <insert id="BonusPoint" parameterType="String">
+        INSERT INTO POINT (ID, POINT, TYPE, DESCRIPTION, SAVE_DATE, EXPIRE_DATE) VALUES (#{id}, 2000, 'ATTEND', '3일 연속 출석체크 추가 포인트 지급' ,CURDATE(), CURDATE() + INTERVAL 1 YEAR);
+        UPDATE POINT X INNER JOIN MEMBER Y ON X.ID = Y.ID
+            SET X.NAME = Y.NAME WHERE Y.ID = #{id};
+        UPDATE POINT X INNER JOIN MEMBER Y ON X.ID = Y.ID
+            SET X.PHONE = Y.PHONE WHERE Y.ID = #{id};
+    </insert>
+
 </mapper>
