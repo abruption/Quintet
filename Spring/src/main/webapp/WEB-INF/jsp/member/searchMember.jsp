@@ -60,6 +60,7 @@
                 <th>SMS 수신동의 일자</th>
                 <th>이메일 수신동의 일자</th>
                 <th>가용 포인트</th>
+                <th>출석일수</th>
             </tr>
             </thead>
             <tbody>
@@ -91,6 +92,11 @@
                     <c:forEach var="point" items="${PointRanking}" varStatus="status">
                         <c:if test="${member.ID eq point.ID}">
                             <td><a href="/member/detailPoint.do?id=${point.ID}" style="text-decoration: none;">${point.TOTAL}P</a></td>
+                        </c:if>
+                    </c:forEach>
+                    <c:forEach var="attend" items="${AttendCount}" varStatus="status">
+                        <c:if test="${member.ID eq attend.ID}">
+                            <td><a href="/member/detailAttend.do?id=${attend.ID}" style="text-decoration: none;">${attend.COUNT}일</a></td>
                         </c:if>
                     </c:forEach>
                 </tr>

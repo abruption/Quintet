@@ -70,7 +70,7 @@
                     </c:forEach>
                     <c:forEach var="attend" items="${AttendCount}" varStatus="status">
                         <c:if test="${attend.ID eq member.ID}">
-                            <td>${attend.COUNT}일</td>
+                            <td><a href="/member/detailAttend.do?id=${attend.ID}" style="text-decoration: none;">${attend.COUNT}일</a></td>
                         </c:if>
                     </c:forEach>
                 </tr>

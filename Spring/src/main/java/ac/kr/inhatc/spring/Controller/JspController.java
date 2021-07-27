@@ -265,12 +265,15 @@ public class JspController {
         ModelAndView mv = new ModelAndView();
         List<?> PointRanking = pointService.PointRanking();
         List<?> MemberList = memberService.MemberList();
+        List<?> AttendCount = attendanceService.AttendCount();
         mv.addObject("PointRanking", PointRanking);
+        mv.addObject("AttendCount", AttendCount);
         mv.addObject("MemberList", MemberList);
         mv.setViewName("/member/searchMember");
         return mv;
     }
 
+    // 출석여부를 판별하는 페이지 Mapping
     @ResponseBody
     @RequestMapping(value = "/Check_Attendance", method = RequestMethod.POST)
     public String Check_Attendance(String id) throws Exception {
@@ -283,6 +286,7 @@ public class JspController {
             return "Fail";
     }
 
+    // DB에 관련 정보를 저장하고 기본 포인트와 추가포인트를 지급을 담당
     @ResponseBody
     @RequestMapping(value = "/Attendance", method = RequestMethod.POST)
     public String Attendance(String id) throws Exception {
@@ -290,15 +294,17 @@ public class JspController {
         attendanceService.Attendance(id);
         pointService.attendPoint(id);
         int result = pointService.CheckAttend(id);
-        //Log.info(String.valueOf(result));
-        if(result == 3){
-            pointService.BonusPoint(id);
-            return "Bonus";
-        } else {
-            return "None";
-        }
+
+//  3일 연속 추가포인트 지급 부분 (오류 발생으로 주석처리)
+//        if(result == 3){
+//            pointService.BonusPoint(id);
+//            return "Bonus";
+//        } else {
+//            return "None";
+//        }
     }
 
+    // 회원의 출석현황을 조회하는 페이지 Mapping
     @RequestMapping("/member/searchAttend.do")
     public ModelAndView searchAttend() throws Exception {
         ModelAndView mv = new ModelAndView();
@@ -309,6 +315,16 @@ public class JspController {
         mv.addObject("MemberList", MemberList);
         mv.addObject("AttendCount", AttendCount);
         mv.setViewName("/member/searchAttend");
+        return mv;
+    }
+
+    @RequestMapping("/member/detailAttend.do")
+    public ModelAndView detailAttend(HttpServletRequest request) throws Exception {
+        String id = request.getParameter("id");
+        List<?> detailAttend = attendanceService.detailAttend(id);
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/member/detailAttend");
+        mv.addObject("detailAttend", detailAttend);
         return mv;
     }
 }

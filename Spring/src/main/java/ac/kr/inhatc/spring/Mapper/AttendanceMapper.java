@@ -7,4 +7,5 @@ public interface AttendanceMapper {
     int attCheck(String id) throws Exception;
     void Attendance(String id) throws Exception;
     List<?> AttendCount() throws Exception;
+    List<?> detailAttend(String id) throws Exception;
 }

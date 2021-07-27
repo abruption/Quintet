@@ -10,6 +10,7 @@
         SELECT COUNT(*) FROM ATTENDANCE WHERE ID = #{id} and ATT_DATE = curdate()
     </select>
 
+    <!-- 출석정보 DB에 입력하는 Query -->
     <insert id="Attendance" parameterType="String">
         INSERT INTO ATTENDANCE (ID, ATT_DATE) VALUES (#{id}, CURDATE());
         UPDATE ATTENDANCE X INNER JOIN MEMBER Y ON X.ID = Y.ID
@@ -18,8 +19,14 @@
             SET X.NAME = Y.NAME WHERE Y.ID = #{id};
     </insert>
 
+    <!-- 출석일수를 가져오는 Query -->
     <select id="AttendCount" resultType="hashmap">
         SELECT ID, COUNT(ID) as 'COUNT' FROM ATTENDANCE GROUP BY ID
+    </select>
+
+    <!-- 회원의 출석현황을 조회하기 위한 Query -->
+    <select id="detailAttend" parameterType="String" resultType="hashmap">
+        SELECT * FROM ATTENDANCE WHERE ID = #{id};
     </select>
 </mapper>
 
