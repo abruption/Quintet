@@ -3,7 +3,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="ac.kr.inhatc.spring.Mapper.AttendanceMapper">
+<mapper namespace="ac.kr.inhatc.spring.Mapper.AttendMapper">
 
     <!-- 회원의 출석여부를 조회하기위한 Query -->
     <select id="attCheck" parameterType="String" resultType="int">
@@ -19,7 +19,7 @@
             SET X.NAME = Y.NAME WHERE Y.ID = #{id};
     </insert>
 
-    <!-- 출석일수를 가져오는 Query -->
+    <!-- 전체 회원의 출석일수를 가져오는 Query -->
     <select id="AttendCount" resultType="hashmap">
         SELECT ID, COUNT(ID) as 'COUNT' FROM ATTENDANCE GROUP BY ID
     </select>
@@ -28,5 +28,11 @@
     <select id="detailAttend" parameterType="String" resultType="hashmap">
         SELECT * FROM ATTENDANCE WHERE ID = #{id};
     </select>
+
+    <!-- 3일 연속 출석체크 여부를 확인하기 위한 Query -->
+    <select id="checkAttend" parameterType="String" resultType="int">
+        SELECT COUNT(ID) FROM ATTENDANCE WHERE ID = #{id} and ATT_DATE BETWEEN DATE_ADD(NOW(), INTERVAL -3 DAY) AND NOW();
+    </select>
+
 </mapper>
 

@@ -93,9 +93,4 @@
         SELECT * FROM MEMBER;
     </select>
 
-    <!-- DTO 미사용으로 인한 로그인 처리 Query 주석처리 → loginCheck로 대체 -->
-<!--    <select id="processLoginMember" parameterType="ac.kr.inhatc.spring.DTO.MemberDTO" resultType="int">-->
-<!--        SELECT ID, PW FROM MEMBER WHERE ID = #{id} and PW = #{password};-->
-<!--    </select>-->
-
 </mapper>

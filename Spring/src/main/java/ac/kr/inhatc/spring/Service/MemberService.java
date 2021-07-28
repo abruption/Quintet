@@ -51,4 +51,5 @@ public class MemberService {
     public List<?> MemberList() throws Exception {
         return memberMapper.MemberList();
     }
+
 }

@@ -47,17 +47,17 @@ public class PointService {
         return pointMapper.PointRanking();
     }
 
-    // 회원의 출석여부 조회
+    // 출석 포인트 지급
     public void attendPoint(String id) throws Exception{
         pointMapper.attendPoint(id);
     }
 
-    // 출석정보를 DB에 저장
-    public int CheckAttend(String id) throws Exception {
-        return pointMapper.CheckAttend(id);
+    // 3일 연속 출석 포인트 중복 지급 조회
+    public int checkBonus(String id) throws Exception {
+        return pointMapper.checkBonus(id);
     }
 
-    // 출석한 ID와 출석일수를 가져옴
+    // 3일 연속 출석 시 지급되는 포인트
     public void BonusPoint(String id) throws Exception {
         pointMapper.BonusPoint(id);
     }

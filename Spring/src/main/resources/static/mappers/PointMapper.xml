@@ -63,18 +63,17 @@
             SET X.PHONE = Y.PHONE WHERE Y.ID = #{id};
     </insert>
 
-    <!-- 당일 출석여부를 판단하는 Query -->
-    <select id="CheckAttend" parameterType="String" resultType="int">
-        SELECT COUNT(ID) FROM ATTENDANCE WHERE ID = #{id} and ATT_DATE BETWEEN DATE_ADD(NOW(), INTERVAL -3 DAY) AND NOW()
+    <!-- 3일 연속 출석시 지급되는 포인트의 중복 지급 여부를 확인하는 Query -->
+    <select id="checkBonus" parameterType="String" resultType="int">
+        SELECT COUNT(*) as 'COUNT' FROM POINT WHERE ID = #{id} and TYPE = 'BONUS' and SAVE_DATE BETWEEN DATE_ADD(NOW(), INTERVAL -3 DAY) AND NOW();
     </select>
 
-    <!-- 3일 연속 출석 시 추가포인트를 지급하는 Query -->
-<!--    <insert id="BonusPoint" parameterType="String">-->
-<!--        INSERT INTO POINT (ID, POINT, TYPE, DESCRIPTION, SAVE_DATE, EXPIRE_DATE) VALUES (#{id}, 2000, 'ATTEND', '3일 연속 출석체크 추가 포인트 지급' ,CURDATE(), CURDATE() + INTERVAL 1 YEAR);-->
-<!--        UPDATE POINT X INNER JOIN MEMBER Y ON X.ID = Y.ID-->
-<!--            SET X.NAME = Y.NAME WHERE Y.ID = #{id};-->
-<!--        UPDATE POINT X INNER JOIN MEMBER Y ON X.ID = Y.ID-->
-<!--            SET X.PHONE = Y.PHONE WHERE Y.ID = #{id};-->
-<!--    </insert>-->
-
+     <!-- 3일 연속 출석 시 추가포인트를 지급하는 Query -->
+    <insert id="BonusPoint" parameterType="String">
+        INSERT INTO POINT (ID, POINT, TYPE, DESCRIPTION, SAVE_DATE, EXPIRE_DATE) VALUES (#{id}, 2000, 'BONUS', '3일 연속 출석체크 추가 포인트 지급' ,CURDATE(), CURDATE() + INTERVAL 1 YEAR);
+        UPDATE POINT X INNER JOIN MEMBER Y ON X.ID = Y.ID
+            SET X.NAME = Y.NAME WHERE Y.ID = #{id};
+        UPDATE POINT X INNER JOIN MEMBER Y ON X.ID = Y.ID
+            SET X.PHONE = Y.PHONE WHERE Y.ID = #{id};
+    </insert>
 </mapper>

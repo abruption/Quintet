@@ -43,9 +43,7 @@
 <body>
 <br>
 <h2>관리자용 출석현황 조회 페이지</h2>
-
-<hr>
-
+<br>
     <div class="table-responsive">
         <table class="search-table table table-bordered table-hover">
             <thead>
@@ -65,12 +63,12 @@
                     <td>${member.PHONE}</td>
                     <c:forEach var="point" items="${PointRanking}" varStatus="status">
                         <c:if test="${member.ID eq point.ID}">
-                            <td><a href="/member/detailPoint.do?id=${point.ID}" style="text-decoration: none;">${point.TOTAL}P</a></td>
+                            <td><a href="/point/detailPoint.do?id=${point.ID}" style="text-decoration: none;">${point.TOTAL}P</a></td>
                         </c:if>
                     </c:forEach>
                     <c:forEach var="attend" items="${AttendCount}" varStatus="status">
                         <c:if test="${attend.ID eq member.ID}">
-                            <td><a href="/member/detailAttend.do?id=${attend.ID}" style="text-decoration: none;">${attend.COUNT}일</a></td>
+                            <td class="search"><a href="/attend/detailAttend.do?id=${attend.ID}" style="text-decoration: none;">${attend.COUNT}일</a></td>
                         </c:if>
                     </c:forEach>
                 </tr>

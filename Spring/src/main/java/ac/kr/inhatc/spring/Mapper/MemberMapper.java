@@ -14,7 +14,4 @@ public interface MemberMapper {
     int loginCheck(String id, String password) throws Exception;
     int processDeleteMember(String id) throws Exception;
     List<?> MemberList() throws Exception;
-
-    //    로그인 성공&실패 기능 구현으로 DTO 미사용
-    //    memberDto processLoginMember(memberDto dto) throws Exception;
 }
