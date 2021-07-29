@@ -47,7 +47,7 @@ public class MemberService {
         return memberMapper.processDeleteMember(id);
     }
 
-    // 회원 조회를 위한 DB 조회
+    // 전체회원 조회를 위한 DB 조회
     public List<?> MemberList() throws Exception {
         return memberMapper.MemberList();
     }

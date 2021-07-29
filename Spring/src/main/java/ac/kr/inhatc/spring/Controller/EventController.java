@@ -91,6 +91,7 @@ public class EventController {
             return 1;
     }
 
+    // 파라미터로 넘겨받은 이벤트명과 당첨자 수를 통해 당첨자를 추첨하고, 당첨자 ID를 넘겨받는 페이지 Mapping
     @RequestMapping("/event/drawEvent.do")
     public ModelAndView drawEvent(HttpServletRequest request) throws Exception {
         String title = request.getParameter("title");
@@ -104,6 +105,7 @@ public class EventController {
         return mv;
     }
 
+    // 당첨자 ID를 넘겨받은 페이지에서 포인트 지급과 이벤트 당첨자 입력을 위한 DB 값 추가 페이지 Mapping
     @ResponseBody
     @RequestMapping(value = "/updateWinner", method = RequestMethod.POST)
     public int updateWinner(String id, String title, String use_point) throws Exception {
