@@ -14,6 +14,17 @@
 
     <%-- 포인트 상세조회용 스크립트 파일 호출 --%>
     <script src="/resource/res/js/detailPoint.js"></script>
+
+    <%-- jQuery HTML Table Search Plugin --%>
+    <script src="/resource/res/js/html-table-search.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('table.search-table').tableSearch({
+                searchText:'<b>' + 'Search : ' + '</b>',
+                searchPlaceHolder:' '
+            });
+        });
+    </script>
     <style>
         #pagination a {
             display:inline-block;
@@ -29,13 +40,14 @@
     <h2>포인트 상세내역 조회 페이지</h2>
     <br>
     <div class="table-responsive">
-        <table class="table table-bordered table-hover">
+        <table class="search-table table table-bordered table-hover">
             <thead>
             <tr>
                 <th>이름</th>
                 <th>전화번호</th>
                 <th>포인트 내역</th>
                 <th>포인트 적립내용</th>
+                <th>포인트 거래유형</th>
                 <th>포인트 적립일시</th>
                 <th>포인트 만료일시</th>
             </tr>
@@ -48,6 +60,7 @@
                     <td style="text-align: center;">${point.PHONE}</td>
                     <td style="text-align: center;">${point.POINT}P</td>
                     <td style="text-align: center;">${point.DESCRIPTION}</td>
+                    <td style="text-align: center;">${point.TYPE}</td>
                     <td style="text-align: center;">${point.SAVE_DATE}</td>
                     <td style="text-align: center;">${point.EXPIRE_DATE}</td>
                 </tr>

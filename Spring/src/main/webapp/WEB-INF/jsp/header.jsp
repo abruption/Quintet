@@ -25,8 +25,8 @@
             </c:when>
             <c:otherwise>
                 <li class="nav-item"><a class="nav-link">${userId}님 환영합니다.</a></li>
-                <li class="nav-item"><a class="nav-link" href='<c:url value="/event/eventList.do"/>'>이벤트</a></li>
                 <li class="nav-item"><a class="nav-link" href='#' onclick="Check_Attendance(); return false;" >출석체크</a></li>
+                <li class="nav-item"><a class="nav-link" href='<c:url value="/event/eventList.do"/>'>이벤트</a></li>
                 <li class="nav-item"><a class="nav-link" href='<c:url value="/point/detailPoint.do"/>'>포인트 상세내역 조회</a></li>
                 <li class="nav-item"><a class="nav-link" href='<c:url value="/member/updateMember.do"/>'>회원정보 수정</a></li>
                 <li class="nav-item"><a class="nav-link" href='#' onclick="Logout(); return false;">로그아웃</a></li>

@@ -1,3 +1,6 @@
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.util.Date" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" %>
 <html>
 <head>
@@ -11,6 +14,43 @@
     <%-- Google jQuery Library --%>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
+    <script type="text/javascript">
+        function checkEvent(event, use_point, end_date) {
+            var data = {
+                event : event
+            }
+
+            $.ajax({
+                url: '/CheckEvent',
+                type: 'POST',
+                data: data,
+
+                success: function(result){
+                    if(result == 1){
+                        alert('이미 참여한 이벤트입니다.');
+                    } else {
+                        JoinEvent(event, use_point, end_date);
+                    }
+                }
+            });
+        }
+
+        function JoinEvent(event, use_point, end_date) {
+            var event = event;
+            var use_point = use_point;
+            var now = new Date();
+            var end_date = new Date(end_date);
+
+            if (now.getTime() <= end_date.getTime()) {
+                if (confirm('이벤트에 참여하시려면 확인 버튼을 눌러주세요.') == true) {
+                    alert('이벤트에 정상적으로 응모되었습니다.');
+                    location.href = '/event/JoinEvent.do?event=' + event + '&use_point=' + use_point;
+                } else {
+                    alert('해당 이벤트는 종료된 이벤트입니다.');
+                }
+            }
+        }
+    </script>
     <style>
         th {
             text-align: center;
@@ -23,6 +63,8 @@
     <title>title</title>
 </head>
 <body>
+
+<br>
     <h2>이벤트 목록</h2>
     <br>
     <div class="table-responsive">
@@ -37,6 +79,16 @@
             </tr>
             </thead>
             <tbody>
+                <c:forEach var="event" items="${EventList}" varStatus="status">
+                    <tr>
+                        <td><a href="#" onclick="checkEvent('${event.TITLE}', '${event.USE_POINT}', '${event.END_DATE}'); return false;">${event.TITLE}</a></td>
+                        <td>${event.START_DATE}</td>
+                        <td>${event.END_DATE}</td>
+                        <td>${event.USE_POINT}P</td>
+                        <td>${event.WINNER}명</td>
+
+                    </tr>
+                </c:forEach>
             </tbody>
         </table>
     </div>

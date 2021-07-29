@@ -32,4 +32,10 @@ public interface PointMapper {
 
     // 3일 연속 출석 시 지급되는 포인트
     void BonusPoint(String id) throws Exception;
+
+    // 이벤트 참여 포인트 사용
+    void JoinEvent(String id, String event, int use_point) throws Exception;
+
+    // 이벤트 당첨자 포인트 지급
+    void winnerPoint(String id, String title, int use_point) throws Exception;
 }

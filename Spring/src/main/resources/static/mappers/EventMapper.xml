@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ac.kr.inhatc.spring.Mapper.EventMapper">
+
+    <!-- DB에 입력한 이벤트 정보를 추가하는 Query -->
+    <insert id="AddEvent" parameterType="String">
+        INSERT INTO EVENT VALUES (#{title}, #{start_date}, #{end_date}, #{use_point}, #{winner})
+    </insert>
+
+    <!-- DB에 저장된 이벤트 목록을 가져오는 Query -->
+    <select id="EventList" resultType="hashmap">
+        SELECT * FROM EVENT
+    </select>
+
+    <!-- 이벤트 참여여부를 판단하는 Query -->
+    <select id="CheckAttend" parameterType="String" resultType="int">
+        SELECT COUNT(ID) FROM ATTEND_EVENT WHERE ID = #{id} and TITLE = #{event};
+    </select>
+
+    <!-- 이벤트 중복참여가 아닐 경우 이벤트 참여정보를 DB에 저장하는 Query -->
+    <insert id="JoinEvent" parameterType="String">
+        INSERT INTO ATTEND_EVENT (ID, TITLE, ATT_DATE, WINNER) VALUES (#{id}, #{event}, NOW(), 'N');
+    </insert>
+
+    <!-- 기간이 종료된 이벤트의 추첨처리 Query -->
+    <select id="DrawEvent" resultType="hashmap">
+        SELECT ID FROM ATTEND_EVENT WHERE TITLE = #{title} ORDER BY RAND() LIMIT #{winner};
+    </select>
+
+    <!-- 이벤트 당첨자 등록 처리 -->
+    <update id="updateWinner" parameterType="String">
+        UPDATE ATTEND_EVENT SET WINNER = 'Y' WHERE ID = #{id} and TITLE = #{title};
+    </update>
+
+    <!-- 이벤트 중복 당첨 확인 Query -->
+    <select id="checkWinner" parameterType="String" resultType="int">
+        SELECT COUNT(*) FROM ATTEND_EVENT WHERE TITLE = #{title} and WINNER = 'Y';
+    </select>
+</mapper>

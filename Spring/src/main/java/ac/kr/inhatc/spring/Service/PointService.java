@@ -62,4 +62,13 @@ public class PointService {
         pointMapper.BonusPoint(id);
     }
 
+    // 이벤트 참여 포인트 사용
+    public void JoinEvent(String id, String event, int use_point) throws Exception {
+        pointMapper.JoinEvent(id, event, use_point);
+    }
+
+    // 이벤트 당첨자 포인트 지급
+    public void winnerPoint(String id, String title, int use_point) throws Exception {
+        pointMapper.winnerPoint(id, title, use_point);
+    }
 }

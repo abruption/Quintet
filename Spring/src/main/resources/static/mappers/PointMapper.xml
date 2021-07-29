@@ -13,8 +13,8 @@
 
     <!-- 회원가입 축하 포인트 지급 및 중복방지를 위한 Query -->
     <insert id="JoinPoint" parameterType="ac.kr.inhatc.spring.DTO.PointDTO">
-        INSERT INTO POINT (ID, NAME, PHONE, POINT, DESCRIPTION, TYPE, SAVE_DATE, EXPIRE_DATE)
-        SELECT #{id}, #{name}, #{phone}, #{point}, #{description}, #{type}, CURDATE(), CURDATE() + INTERVAL 1 YEAR FROM DUAL
+        INSERT INTO POINT (ID, NAME, PHONE, POINT, DESCRIPTION, CATEGORY, TYPE, SAVE_DATE, EXPIRE_DATE)
+        SELECT #{id}, #{name}, #{phone}, #{point}, #{description}, #{type}, '적립', CURDATE(), CURDATE() + INTERVAL 1 YEAR FROM DUAL
         WHERE NOT EXISTS (
             SELECT ID, TYPE FROM POINT WHERE ID = #{id} and TYPE = #{type}
             )
@@ -22,19 +22,19 @@
 
     <!-- 이메일 수신동의 포인트 지급 및 중복방지를 위한 Query -->
     <insert id="EmailPoint" parameterType="ac.kr.inhatc.spring.DTO.PointDTO">
-        INSERT INTO POINT (ID, NAME, PHONE, POINT, DESCRIPTION, TYPE, SAVE_DATE, EXPIRE_DATE)
-        SELECT #{id}, #{name}, #{phone}, #{point}, #{description}, #{type}, CURDATE(), CURDATE() + INTERVAL 1 YEAR FROM DUAL
+        INSERT INTO POINT (ID, NAME, PHONE, POINT, DESCRIPTION, CATEGORY, TYPE, SAVE_DATE, EXPIRE_DATE)
+        SELECT #{id}, #{name}, #{phone}, #{point}, #{description}, #{type}, '적립', CURDATE(), CURDATE() + INTERVAL 1 YEAR FROM DUAL
         WHERE NOT EXISTS (
-            SELECT ID, TYPE FROM POINT WHERE ID = #{id} and TYPE = #{type}
+            SELECT ID, TYPE FROM POINT WHERE ID = #{id} and CATEGORY = #{type}
             )
     </insert>
 
     <!-- SMS 수신동의 포인트 지급 및 중복방지를 위한 Query -->
     <insert id="SMSPoint" parameterType="ac.kr.inhatc.spring.DTO.PointDTO">
-        INSERT INTO POINT (ID, NAME, PHONE, POINT, DESCRIPTION, TYPE, SAVE_DATE, EXPIRE_DATE)
-        SELECT #{id}, #{name}, #{phone}, #{point}, #{description}, #{type}, CURDATE(), CURDATE() + INTERVAL 1 YEAR FROM DUAL
+        INSERT INTO POINT (ID, NAME, PHONE, POINT, DESCRIPTION, CATEGORY, TYPE, SAVE_DATE, EXPIRE_DATE)
+        SELECT #{id}, #{name}, #{phone}, #{point}, #{description}, #{type}, '적립', CURDATE(), CURDATE() + INTERVAL 1 YEAR FROM DUAL
         WHERE NOT EXISTS (
-            SELECT ID, TYPE FROM POINT WHERE ID = #{id} and TYPE = #{type}
+            SELECT ID, TYPE FROM POINT WHERE ID = #{id} and CATEGORY = #{type}
             )
     </insert>
 
@@ -56,7 +56,7 @@
 
     <!-- 출석 포인트를 지급하는 Query -->
     <insert id="attendPoint" parameterType="String">
-        INSERT INTO POINT (ID, POINT, TYPE, DESCRIPTION, SAVE_DATE, EXPIRE_DATE) VALUES (#{id}, 1000, 'ATTEND', '출석체크 포인트 지급' ,CURDATE(), CURDATE() + INTERVAL 1 YEAR);
+        INSERT INTO POINT (ID, POINT, CATEGORY, DESCRIPTION, TYPE, SAVE_DATE, EXPIRE_DATE) VALUES (#{id}, 1000, 'ATTEND', '출석체크 포인트 지급' , '적립', CURDATE(), CURDATE() + INTERVAL 1 YEAR);
         UPDATE POINT X INNER JOIN MEMBER Y ON X.ID = Y.ID
             SET X.NAME = Y.NAME WHERE Y.ID = #{id};
         UPDATE POINT X INNER JOIN MEMBER Y ON X.ID = Y.ID
@@ -65,12 +65,30 @@
 
     <!-- 3일 연속 출석시 지급되는 포인트의 중복 지급 여부를 확인하는 Query -->
     <select id="checkBonus" parameterType="String" resultType="int">
-        SELECT COUNT(*) as 'COUNT' FROM POINT WHERE ID = #{id} and TYPE = 'BONUS' and SAVE_DATE BETWEEN DATE_ADD(NOW(), INTERVAL -3 DAY) AND NOW();
+        SELECT COUNT(*) as 'COUNT' FROM POINT WHERE ID = #{id} and CATEGORY = 'BONUS' and SAVE_DATE BETWEEN DATE_ADD(NOW(), INTERVAL -3 DAY) AND NOW();
     </select>
 
      <!-- 3일 연속 출석 시 추가포인트를 지급하는 Query -->
     <insert id="BonusPoint" parameterType="String">
-        INSERT INTO POINT (ID, POINT, TYPE, DESCRIPTION, SAVE_DATE, EXPIRE_DATE) VALUES (#{id}, 2000, 'BONUS', '3일 연속 출석체크 추가 포인트 지급' ,CURDATE(), CURDATE() + INTERVAL 1 YEAR);
+        INSERT INTO POINT (ID, POINT, CATEGORY, DESCRIPTION, TYPE, SAVE_DATE, EXPIRE_DATE) VALUES (#{id}, 2000, 'BONUS', '3일 연속 출석체크 추가 포인트 지급' , '적립', CURDATE(), CURDATE() + INTERVAL 1 YEAR);
+        UPDATE POINT X INNER JOIN MEMBER Y ON X.ID = Y.ID
+            SET X.NAME = Y.NAME WHERE Y.ID = #{id};
+        UPDATE POINT X INNER JOIN MEMBER Y ON X.ID = Y.ID
+            SET X.PHONE = Y.PHONE WHERE Y.ID = #{id};
+    </insert>
+
+    <!-- 이벤트 참여 포인트 소모 Query -->
+    <insert id="JoinEvent">
+        INSERT INTO POINT (ID, POINT, CATEGORY, DESCRIPTION, TYPE) VALUES (#{id}, -#{use_point}, 'EVENT', #{event}, '사용');
+        UPDATE POINT X INNER JOIN MEMBER Y ON X.ID = Y.ID
+            SET X.NAME = Y.NAME WHERE Y.ID = #{id};
+        UPDATE POINT X INNER JOIN MEMBER Y ON X.ID = Y.ID
+            SET X.PHONE = Y.PHONE WHERE Y.ID = #{id};
+    </insert>
+
+    <!-- 이벤트 당첨자 포인트 지급 -->
+    <insert id="winnerPoint">
+        INSERT INTO POINT (ID, POINT, CATEGORY, DESCRIPTION, TYPE, SAVE_DATE, EXPIRE_DATE) VALUES (#{id}, #{use_point} * 2, 'EVENT', CONCAT(#{title}, ' 이벤트 당첨 포인트 지급'), '적립', CURDATE(), CURDATE() + INTERVAL 6 MONTH);
         UPDATE POINT X INNER JOIN MEMBER Y ON X.ID = Y.ID
             SET X.NAME = Y.NAME WHERE Y.ID = #{id};
         UPDATE POINT X INNER JOIN MEMBER Y ON X.ID = Y.ID
