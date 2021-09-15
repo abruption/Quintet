@@ -2,7 +2,7 @@
 - 자바스크립트는 **하나의 호출 스택을 가지는 싱글 스레드 프로그래밍 언어**이다.  
 스레드가 하나라는 것은 한 번에 한 작업만 처리할 수 있다는 것으로 코드 실행 순서대로, 동기적으로 호출 스택이 쌓여서 처리된다.  
 
-<img src="/Volumes/SAMSUNG USB/퀸텟시스템즈/R&D/신입사원 교육/CallStack.png"/>  
+<img src="CallStack.png"/>  
 
 <br/><br/>
 
@@ -10,7 +10,7 @@
 > 가장 대중적인 자바스크립트 엔진은 구글의 V8 엔진으로, 크롬과 Node.js 안에서 동작한다.  
 자바스크립트 엔진은 다음과 같은 두 가지 구성 요소로 이루어져 있다.
 
-<img src="/Volumes/SAMSUNG USB/퀸텟시스템즈/R&D/신입사원 교육/Engine.png">
+<img src="Engine.png">
 
 - 메모리 힙(Memory Heap): 객체는 힙, 대부분 구조화되지 않은 메모리 영역에 할당된다. 변수와 객체에 대한 모든 메모리 할당은 여기서 발생한다.
 - 호출 스택(Call Stack): 코드가 실행될 때 호출 스택이 쌓인다.
@@ -20,7 +20,7 @@
 ## 자바스크립트 실행환경(Runtime)
 > 브라우저에는 자바스크립트 개발자가 사용하는 거의 모든 API가 존재한다.(Ex. setTimeout)  그러나 이런 API들은 엔진에서 제공해주지 않는다.
 
-<img src="/Volumes/SAMSUNG USB/퀸텟시스템즈/R&D/신입사원 교육/Runtime.png">  
+<img src="Runtime.png">  
 
 - 브라우저는 단순히 엔진 하나만으로 구성되어 있지 않고, DOM, AJAX, setTimeout 등 브라우저에서 제공하는 Web API이라고 하는 것들이 존재한다.  
 - 또한 이러한 Web API의 호출을 통제하기 위한 Event Queue와 Event Loop도 존재한다.
@@ -30,7 +30,7 @@
 ## 호출 스택(Call Stack)
 > 자바스크립트는 단일 스레드 프로그래밍 언어이므로 단일 호출 스택이 존재한다. 단일 호출 스택이 있다는 것은 한 번에 하나의 일(Task)만 처리할 수 있다는 뜻이다.
 
-<img src="/Volumes/SAMSUNG USB/퀸텟시스템즈/R&D/신입사원 교육/CallStack.png">
+<img src="CallStack.png">
 
 - 엔진이 이 코드를 실행하기 전에는 호출 스택이 비어있지만, boo() 함수가 호출되고 나면 이후 foo(), doo() 함수가 호출 스택에 쌓이고 LIFO 방식으로 처리되게 된다.
 
@@ -39,7 +39,7 @@
 ## Stack Overflow
 > 이름 그대로 Stack의 사이즈를 초과하였을 때 발생하는 오류이다.  
 
-<img src="/Volumes/SAMSUNG USB/퀸텟시스템즈/R&D/신입사원 교육/stackoverflow.png">
+<img src="stackoverflow.png">
 
 - 마지막 줄에 foo() 함수가 실행되는데, foo() 내부에서 재귀함수가 존재하므로 스택 프레임이 호출 스택에 계속적으로 쌓이게 되면서 호출 스택의 실제 크기를 초과하게 되면 위와 같은 오류를 발생 시키면서 함수를 종료시킨다.
 
@@ -89,7 +89,7 @@ console.log('Thrid')
 ## 자바스크립트에서의 Blocking과 Non-Blocking
 > Blocking과 Non-Blocking은 `제어점` 관점에서 접근하는 방식이다.
 
-<img src="/Volumes/SAMSUNG USB/퀸텟시스템즈/R&D/신입사원 교육/blocking.jpg">
+<img src="blocking.jpg">
 
 - Blocking은 호출된 함수가 제어권을 넘겨주지 않아, 호출한 함수쪽에서 다른 작업을 수행할 수 없는 상태로 제어권이 돌아오기를 기다리는 것을 말한다.  
 그에 반해, Non-Blocking은 제어권이 넘겨지지 않으므로, 대상의 작업 처리 여부와 상관 없이 호출한 함수 측에서 제어권을 가지고 다음 작업을 수행할 수 있다.
