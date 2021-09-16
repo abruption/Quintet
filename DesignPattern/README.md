@@ -76,10 +76,10 @@ console.log('First')
 setTimeout(() => {
   console.log('Second');
 }, 0);
-console.log('Thrid')
+console.log('Third')
 ~~~
 
-위의 코드에서 실행 결과는 `First`, `Thrid`, `Second`순으로 출력되게 된다.  
+위의 코드에서 실행 결과는 `First`, `Third`, `Second`순으로 출력되게 된다.  
 그 이유는 setTimeout() 함수는 Web API에서 제공하는 비동기 함수로 Web API에서 작업이 끝나면 Callback Queue로 이동하는데, Call Stack에 작업이 없을 경우에만 이동하기 때문에 남은 작업이 존재하지 않는 마지막에 실행되기 때문이다.
 
 <br/><br/>
