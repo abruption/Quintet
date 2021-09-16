@@ -114,14 +114,14 @@ function EvenOrOdd(number){
         if(number % 2 === 0){
             resolve('Even Number')
         }else{
-            reject(new Error('Odd Number'))
+            reject('Odd Number')
 		}        
     })
 }
 
-test(5)
-    .then((resolve) => { console.log(resolve) })
-    .then().catch((err) => { console.eror(err) })
+EvenOrOdd(5)
+    .then(resolve =>  console.log(resolve))
+    .then().catch((err) =>  console.log(err))
 ~~~
 
 - 위 함수와 같이 함수의 처리 순서에 따라 callback을 작성할 수 있어 유지보수에 적합하고, `resolve()`외에 `reject()`를 넣어 각 상황에 따라 다른 함수로 처리되게 할 수도 있다.
