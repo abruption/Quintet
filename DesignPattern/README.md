@@ -48,7 +48,7 @@
 
 <br />
 
-### Synchronous(동기)
+## Synchronous(동기)
 > 요청 처리가 완료된 후에 다음 요청을 처리하는 방식으로 이전 요청을 처리하는 시간이 다음 요청에 영향을 준다.
 ~~~js
 const name = 'YEONGUK'
@@ -69,7 +69,7 @@ console.log(getNationality(nationality))	// South Korea
 
 <br/>
 
-### Asynchronous(비동기)
+## Asynchronous(비동기)
 > 하나의 요청 처리가 완료되기 전에 다음 요청을 처리하는 방식으로 요청과 응답이 다른 시간대에 일어날 수 있다.
 ~~~js
 console.log('First')
@@ -84,17 +84,7 @@ console.log('Thrid')
 
 <br/><br/>
 
-## 자바스크립트에서의 Blocking과 Non-Blocking
-> Blocking과 Non-Blocking은 `제어점` 관점에서 접근하는 방식이다.
-
-<img src="blocking.jpg">
-
-- Blocking은 호출된 함수가 제어권을 넘겨주지 않아, 호출한 함수쪽에서 다른 작업을 수행할 수 없는 상태로 제어권이 돌아오기를 기다리는 것을 말한다.  
-그에 반해, Non-Blocking은 제어권이 넘겨지지 않으므로, 대상의 작업 처리 여부와 상관 없이 호출한 함수 측에서 제어권을 가지고 다음 작업을 수행할 수 있다.
-
-<br/><br/>
-
-## Callback
+### Callback
 > 다른 함수의 인자로 사용되거나 이벤트에 의해 호출되어지는 함수를 말한다. 즉, 어떤 함수의 요청이 처리되어 나온 그 값을 callback하여 다른 함수에서 사용할 수 있는 것을 callback이라 부른다.
 ~~~js
 const arr = [1, 2, 3, 4, 5]
@@ -108,7 +98,7 @@ arr.forEach(element => {
 
 <br/><br/>
 
-## Promise
+### Promise
 > callback의 문제점을 해결하기 위해 나온 개념으로, callback을 예측 가능한 패턴으로 사용할 수 있도록 도와주며 callback 내의 Promise 객체를 활용하여 성공, 실패, 오류 등 다양한 상황에 따른 후속처리를 가능하게 한다.
 ~~~js
 function test(number){
@@ -130,7 +120,7 @@ test(5)
 
 <br/><br/>
 
-## async & await
+### async & await
 > `async`와 `await`은 상당히 직관적으로 동기 함수 앞에는 `async`를 붙이고 비동기 함수 앞에는 	`await`을 붙이면 된다. function 앞에 `async`를 붙이면 해당 함수는 항상 Promise를 반환하고, Promise가 아닌 값을 반환하더라도 이행 상태의 Promise로 값을 감싸 이행된 프로미스가 반환되도록 해야 한다.
 
 ~~~js
@@ -151,6 +141,16 @@ async function getProcess(){
 getProcess()
 ~~~
 - process() 함수에서는 이행 상태의 Promise를 반환하고, getProcess() 함수의 앞에 async 키워드를 process() 함수를 호출하는 앞 부분에 await 키워드를 붙여 동기적으로 동작하도록 하여 순차적으로 실행되는 것을 확인할 수 있다.
+
+<br/><br/>
+
+## 자바스크립트에서의 Blocking과 Non-Blocking
+> Blocking과 Non-Blocking은 `제어점` 관점에서 접근하는 방식이다.
+
+<img src="blocking.jpg">
+
+- Blocking은 호출된 함수가 제어권을 넘겨주지 않아, 호출한 함수쪽에서 다른 작업을 수행할 수 없는 상태로 제어권이 돌아오기를 기다리는 것을 말한다.  
+그에 반해, Non-Blocking은 제어권이 넘겨지지 않으므로, 대상의 작업 처리 여부와 상관 없이 호출한 함수 측에서 제어권을 가지고 다음 작업을 수행할 수 있다.
 
 <br/><br/>
 
