@@ -109,7 +109,7 @@ doSomething(5, getSomething)
 ### Promise
 > callback의 문제점을 해결하기 위해 나온 개념으로, callback을 예측 가능한 패턴으로 사용할 수 있도록 도와주며 callback 내의 Promise 객체를 활용하여 성공, 실패, 오류 등 다양한 상황에 따른 후속처리를 가능하게 한다.
 ~~~js
-function test(number){
+function EvenOrOdd(number){
 	return new Promise((resolve, reject) => { 
         if(number % 2 === 0){
             resolve('Even Number')
