@@ -87,12 +87,15 @@ console.log('Third')
 ### Callback
 > 다른 함수의 인자로 사용되거나 이벤트에 의해 호출되어지는 함수를 말한다. 즉, 어떤 함수의 요청이 처리되어 나온 그 값을 callback하여 다른 함수에서 사용할 수 있는 것을 callback이라 부른다.
 ~~~js
-const arr = [1, 2, 3, 4, 5]
+function doSomething(number, callback) {
+    callback(number * number)
+}
 
-arr.forEach(element => {
-	// 함수가 forEach의 인자로 활용되고 있음
-    console.log(element)
-})
+function getSomething(result){
+    console.log(`결과 값: ${result}`)
+}
+
+doSomething(5, getSomething)
 ~~~
 - 그러나 callback 함수를 너무 많이 중첩하여 사용하면 함수끼리 서로 꼬여 에러가 발생할 수도 있으며, 가독성이 크게 떨어지는 콜백 헬(Callback Hell)이 발생할 수 있다.
 
