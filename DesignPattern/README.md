@@ -111,9 +111,12 @@ doSomething(5, getSomething)
 ~~~js
 function EvenOrOdd(number){
 	return new Promise((resolve, reject) => { 
+        // Pending(대기)
         if(number % 2 === 0){
+            // Fulfilled(이행)
             resolve('Even Number')
         }else{
+            // Rejected(실패)
             reject('Odd Number')
 		}        
     })
