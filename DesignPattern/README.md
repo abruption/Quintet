@@ -87,12 +87,17 @@ console.log('Third')
 ### Callback
 > 다른 함수의 인자로 사용되거나 이벤트에 의해 호출되어지는 함수를 말한다. 즉, 어떤 함수의 요청이 처리되어 나온 그 값을 callback하여 다른 함수에서 사용할 수 있는 것을 callback이라 부른다.
 ~~~js
+// 익명의 함수를 사용하는 콜백함수 예제
+let temp = [1, 2, 3, 4, 5]
+number.forEach(x => { console.log(x * 2) }
+
+// 함수의 이름과 값을 넘기는 콜백 함수
 function doSomething(number, callback) {
     callback(number * number)
 }
 
 function getSomething(result){
-    console.log(`결과 값: ${result}`)
+    console.log(`결과 값: ${result}`)       // 결과 값: 5
 }
 
 doSomething(5, getSomething)
