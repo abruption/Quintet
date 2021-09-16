@@ -145,7 +145,7 @@ function process(){
 
 async function getProcess(){
     console.log('시작')				// 시작
-    console.log(await process())   // (5초 후) 처리 완료 
+    console.log(await process())    // (5초 후) 처리 완료 
     console.log('종료')				// 종료
 }
 
@@ -158,7 +158,39 @@ getProcess()
 ## 자바스크립트에서의 Blocking과 Non-Blocking
 > Blocking과 Non-Blocking은 `제어점` 관점에서 접근하는 방식이다.
 
-<img src="blocking.jpg">
+### Blocking
+~~~js
+const fs = require('fs')
+console.log('Start')
+const data = fs.readFileSync('./text.txt', 'utf8')
+console.log(data)
+console.log('end')
+
+/** Result
+ * Start
+ * Reading File...
+ * End
+ */
+~~~
+
+<br />
+
+### Non-Blocking
+~~~js
+const fs = require('fs')
+console.log('Start')
+fs.readFile('./text.txt', 'utf8', (err, result) => {
+    if(err) throw err
+    else console.log(result)
+})
+console.log('end')
+
+/** Result
+ * Start
+ * End
+ * Reading File...
+ */ 
+~~~
 
 - Blocking은 호출된 함수가 제어권을 넘겨주지 않아, 호출한 함수쪽에서 다른 작업을 수행할 수 없는 상태로 제어권이 돌아오기를 기다리는 것을 말한다.  
 그에 반해, Non-Blocking은 제어권이 넘겨지지 않으므로, 대상의 작업 처리 여부와 상관 없이 호출한 함수 측에서 제어권을 가지고 다음 작업을 수행할 수 있다.
